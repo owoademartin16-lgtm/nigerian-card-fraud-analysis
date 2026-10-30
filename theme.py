@@ -321,16 +321,16 @@ div[data-testid="stVerticalBlock"]:has(> div[data-testid="stElementContainer"] .
 .mini-list { margin-top: auto; border-top: 1px solid var(--line); padding-top: 2px; }
 .mini-row {
   display: flex; align-items: center; justify-content: space-between; gap: 10px;
-  min-height: 26px; box-sizing: border-box;
+  min-height: 27px; box-sizing: border-box;
   padding: 4px 0; border-bottom: 1px solid rgba(43,48,36,0.55);
-  font-size: 10.5px; color: var(--dim);
+  font-size: 11.5px; color: var(--dim);
 }
 .mini-row:last-child { border-bottom: 1px solid transparent; }
 .mini-row .left { display: flex; align-items: center; gap: 7px; }
 .mini-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--dot); }
 .mini-row b {
-  color: var(--cream); font-family: 'Space Mono', monospace; font-size: 9.5px;
-  font-weight: 400; display: flex; align-items: center; min-height: 17px;
+  color: var(--cream); font-family: 'Space Mono', monospace; font-size: 10.5px;
+  font-weight: 400; display: flex; align-items: center; min-height: 18px;
 }
 
 /* ---------------------------------------------------------------- recommendation cards */
