@@ -11,7 +11,7 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-On Streamlit Community Cloud, point the app at `app.py` in this repository. The sidebar filters the month range, time window, channel, state, transaction type and amount band. The KPI cards and charts follow the filters; the day-of-week and merchant-category views are full-period context.
+On Streamlit Community Cloud, choose `owoademartin16-lgtm/nigerian-card-fraud-analysis`, branch `main`, and `app.py` as the entry point. The sidebar filters the month range, time window, channel, state, transaction type and amount band. The KPI cards and charts follow the filters; the day-of-week and merchant-category views are full-period context.
 
 The state-loss chart follows the notebook's top-10-by-rate table, so Kaduna is the largest loss among those high-rate states. Across all states, Lagos carries the largest total fraud value (₦663.4M).
 

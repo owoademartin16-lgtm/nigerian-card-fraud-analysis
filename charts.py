@@ -9,10 +9,8 @@ from theme import (
     AMBER,
     AMOUNT_ORDER,
     BLUE,
-    CARD,
     CHANNEL_COLORS,
     CREAM,
-    DAYTIME,
     DIM,
     FAINT,
     GOLD,
@@ -20,7 +18,6 @@ from theme import (
     LINE,
     OVERNIGHT,
     ROSE,
-    TEAL,
     TYPE_COLORS,
     fmt_ngn,
 )
