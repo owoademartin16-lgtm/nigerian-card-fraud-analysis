@@ -319,6 +319,7 @@ div[data-testid="stVerticalBlock"]:has(> div[data-testid="stElementContainer"] .
 .insight-bar span { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--rose), var(--amber)); }
 .channel-insight-body { min-height: 414px; display: flex; flex-direction: column; }
 .mini-list { margin-top: auto; border-top: 1px solid var(--line); padding-top: 2px; }
+.st-key-night_card .mini-list { margin-top: 24px; }
 .mini-row {
   display: flex; align-items: center; justify-content: space-between; gap: 10px;
   min-height: 27px; box-sizing: border-box;
