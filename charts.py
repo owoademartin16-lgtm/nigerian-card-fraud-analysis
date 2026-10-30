@@ -63,7 +63,7 @@ def style_figure(
     )
     fig.update_xaxes(
         title_text=x_title,
-        gridcolor="#24281F",
+        showgrid=False,
         zeroline=False,
         linecolor=LINE,
         tickfont=dict(size=10, color=DIM),
@@ -72,7 +72,7 @@ def style_figure(
     )
     fig.update_yaxes(
         title_text=y_title,
-        gridcolor="#24281F",
+        showgrid=False,
         zeroline=False,
         linecolor=LINE,
         tickfont=dict(size=10, color=DIM),

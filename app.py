@@ -332,7 +332,7 @@ with left:
         "hour",
     )
 with right:
-    with st.container(border=True):
+    with st.container(border=True, key="night_card"):
         md("""
         <div class="chart-title">Night concentration</div>
         <div class="chart-sub">All hours in this slice, independent of the hour filter.</div>

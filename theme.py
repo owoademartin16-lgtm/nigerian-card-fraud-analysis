@@ -271,6 +271,10 @@ div[data-testid="stVerticalBlock"]:has(> div[data-testid="stElementContainer"] .
   border-radius: 18px !important;
   padding: 6px 8px 2px 8px !important;
 }
+.st-key-hour_card,
+.st-key-night_card {
+  min-height: 480px;
+}
 .chart-title {
   font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 600;
   color: var(--cream); letter-spacing: -0.025em; margin: 4px 4px 0 4px;
@@ -314,11 +318,11 @@ div[data-testid="stVerticalBlock"]:has(> div[data-testid="stElementContainer"] .
 }
 .insight-bar span { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--rose), var(--amber)); }
 .channel-insight-body { min-height: 414px; display: flex; flex-direction: column; }
-.mini-list { margin-top: auto; border-top: 1px solid var(--line); padding-top: 10px; }
+.mini-list { margin-top: auto; border-top: 1px solid var(--line); padding-top: 2px; }
 .mini-row {
   display: flex; align-items: center; justify-content: space-between; gap: 10px;
-  min-height: 30px; box-sizing: border-box;
-  padding: 6px 0; border-bottom: 1px solid rgba(43,48,36,0.55);
+  min-height: 26px; box-sizing: border-box;
+  padding: 4px 0; border-bottom: 1px solid rgba(43,48,36,0.55);
   font-size: 10.5px; color: var(--dim);
 }
 .mini-row:last-child { border-bottom: 1px solid transparent; }
@@ -459,7 +463,7 @@ def section(kicker: str, title: str, text: str) -> None:
 
 
 def chart_card(title: str, subtitle: str, fig, key: str) -> None:
-    with st.container(border=True):
+    with st.container(border=True, key=f"{key}_card"):
         md(f'<div class="chart-title">{title}</div><div class="chart-sub">{subtitle}</div>')
         st.plotly_chart(
             fig,
