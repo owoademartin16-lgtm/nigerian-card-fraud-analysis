@@ -2,6 +2,19 @@
 
 Exploratory analysis of **5,000,000 Nigerian retail banking transactions** from January 2023 to December 2024, worth **₦328.11 billion** in processed value. The goal: find where card and transfer fraud concentrates, and what a risk team should prioritise.
 
+## Streamlit dashboard
+
+`app.py` is the interactive dashboard. It reads `data/fraud_cube.parquet`, a compact aggregate built from the same cleaned dataset used in the notebook. No cleaning or imputation is repeated at runtime.
+
+```bash
+pip install -r requirements.txt
+streamlit run app.py
+```
+
+On Streamlit Community Cloud, point the app at `app.py` in this repository. The sidebar filters the month range, time window, channel, state, transaction type and amount band. The KPI cards and charts follow the filters; the day-of-week and merchant-category views are full-period context.
+
+The state-loss chart follows the notebook's top-10-by-rate table, so Kaduna is the largest loss among those high-rate states. Across all states, Lagos carries the largest total fraud value (₦663.4M).
+
 ## Headline figures
 
 | Measure | Value |
@@ -33,6 +46,12 @@ Exploratory analysis of **5,000,000 Nigerian retail banking transactions** from 
 ## Files
 
 - `Nigerian Banking Card Transactions.ipynb`: the full exploratory analysis, including all outputs and figures.
+- `app.py`: the Streamlit dashboard entry point.
+- `theme.py`: palette, CSS and reusable UI pieces.
+- `charts.py`: Plotly figures built from the dashboard aggregates.
+- `data/fraud_cube.parquet`: 743,785-row aggregate covering month, hour, channel, state, transaction type and amount band.
+- `data/day_summary.csv`, `data/category_summary.csv`, `data/headline.json`: full-period context and validation figures.
+- `prepare_dashboard_data.py`: rebuilds the aggregates from the local Arrow cache of the cleaned Hugging Face dataset.
 
 ## Case study
 

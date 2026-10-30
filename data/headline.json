@@ -1,0 +1,14 @@
+{
+  "total_transactions": 5000000,
+  "fraud_transactions": 40000,
+  "fraud_rate_pct": 0.8,
+  "total_value_ngn": 328109942600.0,
+  "fraud_value_ngn": 2660513100.0,
+  "fraud_value_share_pct": 0.8108602497436175,
+  "avg_transaction_ngn": 65621.98852,
+  "avg_fraud_ngn": 66512.8275,
+  "avg_legit_ngn": 65614.80433467742,
+  "overnight_fraud": 39634,
+  "overnight_fraud_share_pct": 99.08500000000001,
+  "overnight_transactions": 515882
+}
