@@ -275,6 +275,10 @@ div[data-testid="stVerticalBlock"]:has(> div[data-testid="stElementContainer"] .
 .st-key-night_card {
   min-height: 480px;
 }
+.st-key-channel_card,
+.st-key-channel_insight_card {
+  min-height: 500px;
+}
 .chart-title {
   font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 600;
   color: var(--cream); letter-spacing: -0.025em; margin: 4px 4px 0 4px;
@@ -318,6 +322,9 @@ div[data-testid="stVerticalBlock"]:has(> div[data-testid="stElementContainer"] .
 }
 .insight-bar span { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--rose), var(--amber)); }
 .channel-insight-body { min-height: 414px; display: flex; flex-direction: column; }
+.st-key-channel_insight_card .channel-insight-body { min-height: 480px; }
+.st-key-channel_insight_card .mini-row { font-size: 12.5px; }
+.st-key-channel_insight_card .mini-row b { font-size: 11.5px; }
 .mini-list { margin-top: auto; border-top: 1px solid var(--line); padding-top: 2px; }
 .st-key-night_card .mini-list { margin-top: 24px; }
 .mini-row {
@@ -328,10 +335,11 @@ div[data-testid="stVerticalBlock"]:has(> div[data-testid="stElementContainer"] .
 }
 .mini-row:last-child { border-bottom: 1px solid transparent; }
 .mini-row .left { display: flex; align-items: center; gap: 7px; }
+.mini-row > span:last-child { white-space: nowrap; flex-shrink: 0; }
 .mini-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--dot); }
 .mini-row b {
   color: var(--cream); font-family: 'Space Mono', monospace; font-size: 10.5px;
-  font-weight: 400; display: flex; align-items: center; min-height: 18px;
+  font-weight: 400; display: inline-flex; align-items: center; min-height: 18px;
 }
 
 /* ---------------------------------------------------------------- recommendation cards */

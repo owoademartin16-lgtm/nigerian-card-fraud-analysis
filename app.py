@@ -395,7 +395,7 @@ with right:
         f'<span style="color:{FAINT}">· {row.rate:.2f}%</span></span></div>'
         for row in top_channels.itertuples()
     )
-    with st.container(border=True):
+    with st.container(border=True, key="channel_insight_card"):
         md(f"""
         <div class="channel-insight-body">
           <div class="insight-kicker">where the money goes</div>

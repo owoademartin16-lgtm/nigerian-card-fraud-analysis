@@ -180,7 +180,7 @@ def channel_figure(df: pd.DataFrame) -> go.Figure:
                 size=sizes,
                 sizemode="area",
                 sizeref=sizeref,
-                sizemin=9,
+                sizemin=3,
                 color=colors,
                 line=dict(color=INK, width=1.5),
                 opacity=0.92,
