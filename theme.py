@@ -322,7 +322,7 @@ div[data-testid="stVerticalBlock"]:has(> div[data-testid="stElementContainer"] .
 }
 .insight-bar span { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--rose), var(--amber)); }
 .channel-insight-body { min-height: 414px; display: flex; flex-direction: column; }
-.st-key-channel_insight_card .channel-insight-body { min-height: 480px; }
+.st-key-channel_insight_card .channel-insight-body { min-height: 488px; }
 .st-key-channel_insight_card .mini-row { font-size: 12.5px; }
 .st-key-channel_insight_card .mini-row b { font-size: 11.5px; }
 .mini-list { margin-top: auto; border-top: 1px solid var(--line); padding-top: 2px; }
