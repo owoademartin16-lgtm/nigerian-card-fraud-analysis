@@ -326,7 +326,7 @@ div[data-testid="stVerticalBlock"]:has(> div[data-testid="stElementContainer"] .
 .st-key-channel_insight_card .mini-row { font-size: 12.5px; }
 .st-key-channel_insight_card .mini-row b { font-size: 11.5px; }
 .mini-list { margin-top: auto; border-top: 1px solid var(--line); padding-top: 2px; }
-.st-key-night_card .mini-list { margin-top: 24px; }
+.st-key-night_card .mini-list { margin-top: 34px; }
 .mini-row {
   display: flex; align-items: center; justify-content: space-between; gap: 10px;
   min-height: 27px; box-sizing: border-box;
