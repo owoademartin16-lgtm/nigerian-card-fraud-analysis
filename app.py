@@ -52,31 +52,24 @@ def load_data():
     headline = json.loads((DATA / "headline.json").read_text(encoding="utf-8"))
     day = pd.read_csv(DATA / "day_summary.csv")
     cat = pd.read_csv(DATA / "category_summary.csv", dtype={"merchant_category_code": "string"})
-    return cube, headline, day, cat
 
+    months = sorted(str(x) for x in cube["month"].cat.categories)
+    all_states = [str(x) for x in cube["location_state"].cat.categories]
+    channel_categories = [str(x) for x in cube["channel"].cat.categories]
+    available_channels = [c for c in CHANNEL_ORDER if c in channel_categories]
+    available_channels.extend(c for c in channel_categories if c not in available_channels)
+    month_labels = {m: pd.to_datetime(m + "-01").strftime("%b %y") for m in months}
 
-def unique_values(series: pd.Series) -> list[str]:
-    if isinstance(series.dtype, pd.CategoricalDtype):
-        return [str(x) for x in series.cat.categories]
-    return sorted(series.dropna().astype(str).unique().tolist())
+    return cube, headline, day, cat, months, all_states, available_channels, month_labels
 
 
 st.markdown(CSS, unsafe_allow_html=True)
 
 try:
-    cube, headline, day, cat = load_data()
+    cube, headline, day, cat, months, all_states, available_channels, MONTH_LABELS = load_data()
 except FileNotFoundError:
     st.error("Dashboard data is missing. Run `python prepare_dashboard_data.py` first.")
     st.stop()
-
-months = sorted(cube["month"].astype(str).unique())
-all_states = unique_values(cube["location_state"])
-available_channels = [c for c in CHANNEL_ORDER if c in set(cube["channel"].astype(str))]
-for extra in unique_values(cube["channel"]):
-    if extra not in available_channels:
-        available_channels.append(extra)
-
-MONTH_LABELS = {m: pd.to_datetime(m + "-01").strftime("%b %y") for m in months}
 
 
 # ---------------------------------------------------------------- sidebar
