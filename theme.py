@@ -69,7 +69,8 @@ html, body, .stApp {
 }
 
 .stApp { color: var(--cream); }
-div[data-testid="stHeader"] { background: transparent; }
+header[data-testid="stHeader"],
+div[data-testid="stHeader"] { background: transparent !important; }
 footer { visibility: hidden; }
 #MainMenu, [data-testid="stMainMenu"], [data-testid="stAppDeployButton"] { display: none !important; }
 div.block-container {
