@@ -135,7 +135,7 @@ div[data-baseweb="input"] > div {
 }
 div[data-testid="stSidebar"] hr { border-color: var(--line); }
 
-.side-brand { display: flex; align-items: center; gap: 11px; margin: 0 0 1.4rem 0; }
+.side-brand { display: flex; align-items: center; gap: 11px; margin: -48px 0 1.4rem 0; }
 .brand-mark {
   width: 38px; height: 38px; border-radius: 11px;
   display: grid; place-items: center;
@@ -312,20 +312,87 @@ div[data-testid="stVerticalBlock"]:has(> div[data-testid="stElementContainer"] .
   font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.15em;
   text-transform: uppercase; color: var(--amber); margin-bottom: 10px;
 }
-.insight-value {
-  font-family: 'Space Grotesk', sans-serif; font-size: 52px; font-weight: 600;
-  line-height: 0.95; letter-spacing: -0.055em; color: var(--cream);
-}
 .insight-text { color: var(--dim); font-size: 12.5px; line-height: 1.55; margin: 10px 0 14px 0; }
 .insight-text strong { color: var(--cream); font-weight: 600; }
-.insight-bar {
-  height: 6px; border-radius: 999px; background: #262B1E; overflow: hidden; margin-bottom: 14px;
-}
-.insight-bar span { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--rose), var(--amber)); }
 .channel-insight-body { min-height: 414px; display: flex; flex-direction: column; }
 .st-key-channel_insight_card .channel-insight-body { min-height: 488px; }
 .st-key-channel_insight_card .mini-row { font-size: 12.5px; }
 .st-key-channel_insight_card .mini-row b { font-size: 11.5px; }
+
+/* money split card */
+.money-body { justify-content: space-between; }
+.money-topline { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.money-topline .insight-kicker { margin-bottom: 0; }
+.money-scope {
+  font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--faint); border: 1px solid var(--line);
+  border-radius: 999px; padding: 3px 7px; white-space: nowrap;
+}
+.money-hero { display: flex; align-items: center; gap: 22px; padding: 12px 0 4px 0; }
+.money-gauge {
+  width: 184px; height: 184px; flex: 0 0 184px; position: relative;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--amber) 0 var(--mobile),
+    var(--rose) var(--mobile) var(--total),
+    #262B1E var(--total) 100%
+  );
+}
+.money-gauge::before {
+  content: ""; position: absolute; inset: 15px; border-radius: 50%;
+  background: #13160F; border: 1px solid var(--line);
+}
+.money-gauge-core {
+  position: absolute; inset: 15px; z-index: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; text-align: center;
+}
+.money-gauge-value {
+  font-family: 'Space Grotesk', sans-serif; font-size: 42px; font-weight: 600;
+  letter-spacing: -0.06em; line-height: 0.9; color: var(--cream);
+}
+.money-gauge-value span { font-size: 19px; letter-spacing: -0.02em; color: var(--dim); margin-left: 1px; }
+.money-gauge-label {
+  margin-top: 7px; font-family: 'Space Mono', monospace; font-size: 8px;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--amber);
+}
+.money-copy { min-width: 0; flex: 1; }
+.money-copy p { margin: 0 0 14px 0; color: var(--dim); font-size: 13px; line-height: 1.55; }
+.money-copy p strong { color: var(--cream); font-weight: 600; }
+.money-total {
+  font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 600;
+  letter-spacing: -0.04em; line-height: 1; color: var(--cream);
+}
+.money-total span {
+  display: block; margin-top: 5px; font-family: 'Space Mono', monospace;
+  font-size: 9px; font-weight: 400; letter-spacing: 0.08em; color: var(--faint);
+  text-transform: uppercase;
+}
+.money-ledger { border-top: 1px solid var(--line); }
+.money-row {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center;
+  gap: 14px; min-height: 42px; padding: 9px 0;
+  border-bottom: 1px solid rgba(43,48,36,0.55); font-size: 12px; color: var(--dim);
+}
+.money-row:last-child { border-bottom: 1px solid transparent; }
+.money-name { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.money-name i {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--dot);
+  flex: 0 0 auto;
+}
+.money-amount { font-family: 'Space Mono', monospace; font-size: 11.5px; color: var(--cream); white-space: nowrap; }
+.money-share {
+  font-family: 'Space Mono', monospace; font-size: 10px; color: var(--faint);
+  min-width: 42px; text-align: right; white-space: nowrap;
+}
+.money-row-rest .money-name { color: var(--faint); }
+.money-row-rest .money-amount { color: var(--dim); }
+.money-foot {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding-top: 10px; font-family: 'Space Mono', monospace; font-size: 8.5px;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint);
+}
+.money-foot b { color: var(--dim); font-weight: 400; }
+
 .mini-list { margin-top: auto; border-top: 1px solid var(--line); padding-top: 2px; }
 .st-key-night_card .mini-list { margin-top: 34px; }
 .mini-row {
@@ -394,7 +461,6 @@ div[data-testid="stAlert"] { border-radius: 12px; }
   .hero h1 { font-size: 48px; }
   .hero .lede { font-size: 14px; }
   .kpi-value { font-size: 24px; }
-  .insight-value { font-size: 42px; }
   .insight-card { min-height: 0; }
   .channel-insight-body { min-height: 0; }
   div[data-testid="stHorizontalBlock"]:has(.chart-title),
@@ -422,11 +488,15 @@ div[data-testid="stAlert"] { border-radius: 12px; }
 }
 @media (max-width: 900px) {
   div.block-container { padding-top: 1rem; }
+  .side-brand { margin-top: -56px; }
   .hero h1 { font-size: 40px; }
   .kpi-card { height: 150px; min-height: 150px; }
 }
 @media (max-width: 700px) {
   .kpi-card { height: 142px; min-height: 142px; }
+  .money-hero { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .money-gauge { width: 154px; height: 154px; flex-basis: 154px; }
+  .money-gauge-value { font-size: 35px; }
 }
 </style>
 """
@@ -477,7 +547,6 @@ def chart_card(title: str, subtitle: str, fig, key: str) -> None:
         md(f'<div class="chart-title">{title}</div><div class="chart-sub">{subtitle}</div>')
         st.plotly_chart(
             fig,
-            width="stretch",
             theme=None,
             config={"displayModeBar": False, "responsive": True},
             key=key,

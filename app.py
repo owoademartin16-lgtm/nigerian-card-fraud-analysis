@@ -16,7 +16,6 @@ from theme import (
     AMBER,
     AMOUNT_ORDER,
     BLUE,
-    CHANNEL_COLORS,
     CHANNEL_ORDER,
     CREAM,
     CSS,
@@ -180,7 +179,7 @@ with st.sidebar:
 # ---------------------------------------------------------------- hero
 md("""
 <div class="hero">
-  <div class="kicker">case study · nigerian retail banking · 2023–2024</div>
+  <div class="kicker">dashboard · nigerian retail banking · 2023–2024</div>
   <h1>Fraud runs on the <span class="accent">night shift</span>.</h1>
   <p class="lede">
     Nigeria's retail banks processed <strong>5,000,000 transactions worth ₦328.11 billion</strong>
@@ -332,7 +331,6 @@ with right:
         """)
         st.plotly_chart(
             ch.overnight_donut(night_share),
-            width="stretch",
             theme=None,
             config={"displayModeBar": False, "responsive": True},
             key="night",
@@ -367,9 +365,26 @@ section(
 ch_data = ch.aggregate(f, "channel")
 ch_data["channel"] = ch_data["channel"].astype(str)
 ch_data = ch_data.sort_values("fraud_amount", ascending=False)
-mobile_pos = ch_data[ch_data["channel"].isin(["mobile", "pos"])]["fraud_amount"].sum()
+by_channel = ch_data.set_index("channel")
+
+
+def channel_money(name: str) -> tuple[float, float]:
+    if name not in by_channel.index:
+        return 0.0, 0.0
+    row = by_channel.loc[name]
+    return float(row["fraud_amount"]), float(row["rate"])
+
+
+mobile_value, mobile_rate = channel_money("mobile")
+pos_value, pos_rate = channel_money("pos")
+mobile_pos = mobile_value + pos_value
 mobile_pos_share = mobile_pos / fraud_value * 100 if fraud_value else 0.0
-top_channels = ch_data.head(4)
+mobile_share = mobile_value / fraud_value * 100 if fraud_value else 0.0
+pos_share = pos_value / fraud_value * 100 if fraud_value else 0.0
+rest_value = max(0.0, fraud_value - mobile_pos)
+rest_share = max(0.0, 100 - mobile_pos_share)
+gauge_mobile = max(0.0, min(100.0, mobile_share))
+gauge_total = max(gauge_mobile, min(100.0, mobile_pos_share))
 
 left, right = st.columns([3, 2], gap="medium")
 with left:
@@ -380,24 +395,46 @@ with left:
         "channel",
     )
 with right:
-    rows = "".join(
-        f'<div class="mini-row"><span class="left">'
-        f'<span class="mini-dot" style="--dot:{CHANNEL_COLORS.get(str(row.channel), AMBER)}"></span>'
-        f'{row.channel}</span>'
-        f'<span><b>{fmt_ngn(row.fraud_amount)}</b> '
-        f'<span style="color:{FAINT}">· {row.rate:.2f}%</span></span></div>'
-        for row in top_channels.itertuples()
-    )
     with st.container(border=True, key="channel_insight_card"):
         md(f"""
-        <div class="channel-insight-body">
-          <div class="insight-kicker">where the money goes</div>
-          <div class="insight-value">{mobile_pos_share:.1f}%</div>
-          <div class="insight-text">
-            of fraud value in this slice runs through <strong>mobile and POS</strong>.
+        <div class="channel-insight-body money-body">
+          <div class="money-topline">
+            <div class="insight-kicker">where the money goes</div>
+            <div class="money-scope">fraud value · this slice</div>
           </div>
-          <div class="insight-bar"><span style="width:{max(0, min(100, mobile_pos_share)):.1f}%"></span></div>
-          <div class="mini-list">{rows}</div>
+          <div class="money-hero">
+            <div class="money-gauge" style="--mobile:{gauge_mobile:.1f}%; --total:{gauge_total:.1f}%">
+              <div class="money-gauge-core">
+                <div class="money-gauge-value">{mobile_pos_share:.1f}<span>%</span></div>
+                <div class="money-gauge-label">mobile + POS</div>
+              </div>
+            </div>
+            <div class="money-copy">
+              <p>of fraud value in this slice runs through <strong>mobile and POS</strong>.</p>
+              <div class="money-total">{fmt_ngn(mobile_pos)}<span>of {fmt_ngn(fraud_value)}</span></div>
+            </div>
+          </div>
+          <div class="money-ledger">
+            <div class="money-row" style="--dot:{AMBER}">
+              <span class="money-name"><i></i>mobile</span>
+              <span class="money-amount">{fmt_ngn(mobile_value)}</span>
+              <span class="money-share">{mobile_share:.1f}%</span>
+            </div>
+            <div class="money-row" style="--dot:{ROSE}">
+              <span class="money-name"><i></i>POS</span>
+              <span class="money-amount">{fmt_ngn(pos_value)}</span>
+              <span class="money-share">{pos_share:.1f}%</span>
+            </div>
+            <div class="money-row money-row-rest" style="--dot:{FAINT}">
+              <span class="money-name"><i></i>other channels</span>
+              <span class="money-amount">{fmt_ngn(rest_value)}</span>
+              <span class="money-share">{rest_share:.1f}%</span>
+            </div>
+          </div>
+          <div class="money-foot">
+            <span>mobile rate <b>{mobile_rate:.2f}%</b></span>
+            <span>POS rate <b>{pos_rate:.2f}%</b></span>
+          </div>
         </div>
         """)
 
