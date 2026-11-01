@@ -17,10 +17,8 @@ from theme import (
     AMOUNT_ORDER,
     BLUE,
     CHANNEL_ORDER,
-    CREAM,
     CSS,
     DAYTIME,
-    DIM,
     FAINT,
     GOLD,
     OVERNIGHT,
@@ -73,10 +71,10 @@ except FileNotFoundError:
 
 # ---------------------------------------------------------------- sidebar
 with st.sidebar:
-    md("""
+    md(f"""
     <div class="side-brand">
       <div class="brand-mark">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFB627"
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{AMBER}"
              stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 3l7 3v6c0 4.4-3 7.3-7 9-4-1.7-7-4.6-7-9V6l7-3z"/>
           <path d="M9 12l2 2 4-4"/>
@@ -472,7 +470,7 @@ section(
     "the clock does.",
 )
 
-c1, c2, c3 = st.columns(3, gap="medium")
+c1, c2 = st.columns(2, gap="medium")
 with c1:
     chart_card(
         "Amount band",
@@ -487,13 +485,13 @@ with c2:
         ch.type_figure(f),
         "type",
     )
-with c3:
-    chart_card(
-        "Day of week",
-        'Full period. Every day sits between 0.779% and 0.809%. <span class="mini-pill">full period</span>',
-        ch.day_figure(day),
-        "day",
-    )
+
+chart_card(
+    "Day of week",
+    'Full period. Every day sits between 0.779% and 0.809%. <span class="mini-pill">full period</span>',
+    ch.day_figure(day),
+    "day",
+)
 
 with st.expander("Merchant category detail · full period"):
     md("""

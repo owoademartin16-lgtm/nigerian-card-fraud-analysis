@@ -9,6 +9,8 @@ from theme import (
     AMBER,
     AMOUNT_ORDER,
     BLUE,
+    CARD,
+    CARD_2,
     CHANNEL_COLORS,
     CREAM,
     DIM,
@@ -18,9 +20,18 @@ from theme import (
     LINE,
     OVERNIGHT,
     ROSE,
+    TEAL,
     TYPE_COLORS,
     fmt_ngn,
 )
+
+
+def rgba(hex_color: str, alpha: float) -> str:
+    h = hex_color.lstrip("#")
+    if len(h) == 3:
+        h = "".join(c * 2 for c in h)
+    r, g, b = (int(h[i : i + 2], 16) for i in (0, 2, 4))
+    return f"rgba({r},{g},{b},{alpha})"
 
 
 def aggregate(df: pd.DataFrame, by: str) -> pd.DataFrame:
@@ -56,7 +67,7 @@ def style_figure(
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         font=dict(family="Inter, sans-serif", color=DIM, size=11),
-        hoverlabel=dict(bgcolor="#1B1F16", bordercolor="#3A4030", font=dict(color=CREAM, size=11)),
+        hoverlabel=dict(bgcolor=CARD, bordercolor=LINE, font=dict(color=CREAM, size=11)),
         showlegend=showlegend,
         hovermode="closest",
         bargap=0.28,
@@ -89,7 +100,7 @@ def style_figure(
 def hour_figure(df: pd.DataFrame) -> go.Figure:
     h = aggregate(df, "hour").set_index("hour").reindex(range(24), fill_value=0).reset_index()
     h["rate"] = np.where(h["total"] > 0, h["fraud"] / h["total"] * 100, 0.0)
-    colors = [ROSE if int(x) in OVERNIGHT else "rgba(91,141,239,0.62)" for x in h["hour"]]
+    colors = [ROSE if int(x) in OVERNIGHT else rgba(BLUE, 0.55) for x in h["hour"]]
     custom = np.stack([h["total"], h["fraud"]], axis=-1)
     fig = go.Figure(
         go.Bar(
@@ -124,20 +135,20 @@ def month_figure(df: pd.DataFrame, month_list: list[str]) -> go.Figure:
     m["month"] = m["month"].astype(str)
     m = m.set_index("month").reindex(month_list, fill_value=0).reset_index()
     m["rate"] = np.where(m["total"] > 0, m["fraud"] / m["total"] * 100, 0.0)
-    labels = pd.to_datetime(m["month"] + "-01").dt.strftime("%b %y").tolist()
+    m["date"] = pd.to_datetime(m["month"] + "-01")
     custom = np.stack([m["total"], m["fraud"], m["fraud_amount"] / 1e6], axis=-1)
     fig = go.Figure(
         go.Scatter(
-            x=m["month"],
+            x=m["date"],
             y=m["rate"],
             mode="lines+markers",
-            line=dict(color=AMBER, width=2.2, shape="linear"),
-            marker=dict(size=6, color=AMBER, line=dict(color=INK, width=1.4)),
+            line=dict(color=AMBER, width=1.6, shape="linear"),
+            marker=dict(size=4.5, color=AMBER, line=dict(color=INK, width=1.2)),
             fill="tozeroy",
-            fillcolor="rgba(255,182,39,0.055)",
+            fillcolor=rgba(AMBER, 0.045),
             customdata=custom,
             hovertemplate=(
-                "<b>%{x}</b><br>"
+                "<b>%{x|%b %Y}</b><br>"
                 "Fraud rate %{y:.3f}%<br>"
                 "%{customdata[0]:,.0f} transactions<br>"
                 "%{customdata[1]:,.0f} frauds<br>"
@@ -145,18 +156,27 @@ def month_figure(df: pd.DataFrame, month_list: list[str]) -> go.Figure:
             ),
         )
     )
-    step = 2 if len(m) > 14 else 1
-    fig.update_xaxes(
-        tickmode="array",
-        tickvals=m["month"].tolist()[::step],
-        ticktext=labels[::step],
-        tickangle=-45,
-        title_text="",
-    )
-    fig.update_yaxes(title_text="fraud rate (%)")
     ymax = float(m["rate"].max()) if len(m) else 0.0
     y_range = [0, 1.0] if ymax <= 1.2 else [0, ymax * 1.18]
-    return style_figure(fig, 326, y_range=y_range)
+    fig = style_figure(fig, 326, y_title="fraud rate (%)", y_range=y_range)
+    fig.update_xaxes(
+        tickformat="%b %y",
+        dtick="M1" if len(m) <= 12 else "M2",
+        tickangle=-45,
+        tickfont=dict(size=9.5, color=DIM),
+        showspikes=True,
+        spikecolor=LINE,
+        spikethickness=1,
+        spikedash="dot",
+        spikemode="across",
+        spikesnap="data",
+    )
+    fig.update_yaxes(
+        tickformat=".2f",
+        ticksuffix="%",
+        tickfont=dict(size=10, color=DIM),
+    )
+    return fig
 
 
 def channel_figure(df: pd.DataFrame) -> go.Figure:
@@ -174,7 +194,7 @@ def channel_figure(df: pd.DataFrame) -> go.Figure:
             mode="markers+text",
             text=ch["channel"],
             textposition="top center",
-            textfont=dict(size=10, color=CREAM, family="Space Mono"),
+            textfont=dict(size=12, color=CREAM, family="Space Mono"),
             cliponaxis=False,
             marker=dict(
                 size=sizes,
@@ -275,11 +295,11 @@ def amount_figure(df: pd.DataFrame) -> go.Figure:
             x=a["rate"],
             y=a["amount_group"],
             orientation="h",
-            marker_color="rgba(78,205,196,0.78)",
+            marker_color=rgba(TEAL, 0.72),
             marker_line_width=0,
             text=[f"{v:.2f}%" for v in a["rate"]],
             textposition="outside",
-            textfont=dict(size=8.5, color=CREAM, family="Space Mono"),
+            textfont=dict(size=9.5, color=CREAM, family="Space Mono"),
             cliponaxis=False,
             customdata=custom,
             hovertemplate=(
@@ -291,9 +311,11 @@ def amount_figure(df: pd.DataFrame) -> go.Figure:
         )
     )
     fig.update_xaxes(title_text="fraud rate (%)")
-    fig.update_yaxes(title_text="", tickfont=dict(size=8.5, color=DIM))
+    fig.update_yaxes(title_text="")
     xmax = float(a["rate"].max()) if len(a) else 0.0
-    return style_figure(fig, 292, margin_r=48, x_range=[0, max(1.0, xmax * 1.35)])
+    fig = style_figure(fig, 292, margin_r=48, x_range=[0, max(1.0, xmax * 1.35)])
+    fig.update_yaxes(tickfont=dict(size=12, color=DIM))
+    return fig
 
 
 def type_figure(df: pd.DataFrame) -> go.Figure:
@@ -310,7 +332,7 @@ def type_figure(df: pd.DataFrame) -> go.Figure:
             marker_line_width=0,
             text=[f"{v:.3f}%" for v in t["rate"]],
             textposition="outside",
-            textfont=dict(size=9, color=CREAM, family="Space Mono"),
+            textfont=dict(size=10, color=CREAM, family="Space Mono"),
             cliponaxis=False,
             customdata=custom,
             hovertemplate=(
@@ -325,7 +347,10 @@ def type_figure(df: pd.DataFrame) -> go.Figure:
     fig.update_xaxes(title_text="")
     fig.update_yaxes(title_text="fraud rate (%)")
     ymax = float(t["rate"].max()) if len(t) else 0.0
-    return style_figure(fig, 292, y_range=[0, max(1.0, ymax * 1.35)])
+    fig = style_figure(fig, 292, y_range=[0, max(1.0, ymax * 1.35)])
+    fig.update_xaxes(tickfont=dict(size=12, color=DIM))
+    fig.update_yaxes(tickfont=dict(size=11, color=DIM))
+    return fig
 
 
 def day_figure(day: pd.DataFrame) -> go.Figure:
@@ -335,7 +360,7 @@ def day_figure(day: pd.DataFrame) -> go.Figure:
         go.Bar(
             x=d["day_of_week"],
             y=d["fraud_rate_pct"],
-            marker_color="rgba(91,141,239,0.72)",
+            marker_color=rgba(BLUE, 0.65),
             marker_line_width=0,
             text=[f"{v:.2f}%" for v in d["fraud_rate_pct"]],
             textposition="outside",
@@ -364,7 +389,7 @@ def overnight_donut(night_share: float) -> go.Figure:
             hole=0.74,
             sort=False,
             direction="clockwise",
-            marker=dict(colors=[ROSE, "#262B1E"], line=dict(color=INK, width=2)),
+            marker=dict(colors=[ROSE, CARD_2], line=dict(color=INK, width=2)),
             textinfo="none",
             hoverinfo="skip",
         )

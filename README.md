@@ -10,7 +10,9 @@ Exploratory analysis of **5,000,000 Nigerian retail banking transactions** from 
 | --- | --- |
 | `Nigerian Banking Card Transactions.ipynb` | Full exploratory analysis, from data loading and quality checks to fraud-rate charts by time, state, channel, merchant category, transaction type and amount band. |
 | `app.py` | Streamlit dashboard entry point, sidebar filters and page layout. |
-| `theme.py` | Dark visual system, CSS, KPI cards and Plotly styling. |
+| `theme.py` | Main light visual system, CSS, KPI cards and Plotly styling. |
+| `theme_dark.py` | Dark palette and CSS copy used by the optional dark dashboard. |
+| `run_dark.sh` | Runs the same dashboard with the dark theme. |
 | `charts.py` | Reusable Plotly figures built from the dashboard aggregates. |
 | `data/fraud_cube.parquet` | 743,785-row pre-aggregated cube that powers the filtered dashboard views. |
 | `data/day_summary.csv` | Full-period day-of-week context. |
@@ -30,6 +32,14 @@ The dashboard reads `data/fraud_cube.parquet`, a compact aggregate built from th
 pip install -r requirements.txt
 streamlit run app.py
 ```
+
+The main app uses the light theme. The original dark theme is kept as a runnable copy:
+
+```bash
+./run_dark.sh
+```
+
+`run_dark.sh` sets `FRAUD_THEME=dark`, loads `theme_dark.py` and passes the dark Streamlit palette. The app, charts, filters and data are otherwise the same.
 
 ### Filters
 

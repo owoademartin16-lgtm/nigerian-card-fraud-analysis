@@ -1,24 +1,25 @@
 """Visual language for the fraud dashboard."""
 from __future__ import annotations
 
+import os
 import textwrap
 
 import streamlit as st
 
-CREAM = "#F1EDDD"
-DIM = "#A6AC9A"
-FAINT = "#737B6B"
-INK = "#0B0D09"
-CARD = "#141710"
-CARD_2 = "#1B1F16"
-LINE = "#2B3024"
-AMBER = "#FFB627"
-GOLD = "#FFD166"
-ROSE = "#E96B6B"
-TEAL = "#4ECDC4"
-BLUE = "#5B8DEF"
-GREEN = "#7BC96F"
-PURPLE = "#B388EB"
+CREAM = "#17201A"
+DIM = "#556057"
+FAINT = "#7A847B"
+INK = "#FFFFFF"
+CARD = "#FFFFFF"
+CARD_2 = "#F2F4EE"
+LINE = "#DCE2D7"
+AMBER = "#B45309"
+GOLD = "#CA8A04"
+ROSE = "#BE3A3A"
+TEAL = "#0F766E"
+BLUE = "#2563EB"
+GREEN = "#15803D"
+PURPLE = "#7C3AED"
 
 OVERNIGHT = [22, 23, 0, 1, 2, 3, 4, 5, 6]
 DAYTIME = list(range(7, 22))
@@ -47,25 +48,25 @@ CSS = """
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap');
 
 :root {
-  --cream: #F1EDDD;
-  --dim: #A6AC9A;
-  --faint: #737B6B;
-  --ink: #0B0D09;
-  --card: #141710;
-  --card2: #1B1F16;
-  --line: #2B3024;
-  --amber: #FFB627;
-  --gold: #FFD166;
-  --rose: #E96B6B;
-  --teal: #4ECDC4;
-  --blue: #5B8DEF;
+  --cream: #17201A;
+  --dim: #556057;
+  --faint: #7A847B;
+  --ink: #FFFFFF;
+  --card: #FFFFFF;
+  --card2: #F2F4EE;
+  --line: #DCE2D7;
+  --amber: #B45309;
+  --gold: #CA8A04;
+  --rose: #BE3A3A;
+  --teal: #0F766E;
+  --blue: #2563EB;
 }
 
 html, body, .stApp {
   background:
-    radial-gradient(1100px 560px at 12% -8%, rgba(255,182,39,0.09), transparent 62%),
-    radial-gradient(900px 520px at 102% 2%, rgba(233,107,107,0.07), transparent 58%),
-    #0B0D09;
+    radial-gradient(1100px 560px at 12% -8%, rgba(180,83,9,0.05), transparent 62%),
+    radial-gradient(900px 520px at 102% 2%, rgba(190,58,58,0.035), transparent 58%),
+    #F6F7F3;
 }
 
 .stApp { color: var(--cream); }
@@ -89,7 +90,7 @@ p, li, div { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif
 
 /* ---------------------------------------------------------------- sidebar */
 section[data-testid="stSidebar"] {
-  background: #0F120C;
+  background: #FFFFFF;
   border-right: 1px solid var(--line);
 }
 section[data-testid="stSidebar"] > div { padding-top: 1.2rem; }
@@ -106,7 +107,7 @@ section[data-testid="stSidebar"] label[data-testid="stWidgetLabel"] p {
   color: var(--dim);
 }
 section[data-testid="stSidebar"] button {
-  background: #1A1E15;
+  background: #F4F6F1;
   border: 1px solid var(--line);
   color: var(--cream);
   border-radius: 10px;
@@ -118,18 +119,27 @@ section[data-testid="stSidebar"] button {
 section[data-testid="stSidebar"] button:hover {
   border-color: var(--amber);
   color: var(--amber);
-  background: #1F2418;
+  background: #EEF2EA;
 }
 span[data-baseweb="tag"] {
-  background: #262B1E !important;
+  background: #F0F3EC !important;
   color: var(--cream) !important;
-  border: 1px solid #343A2A !important;
+  border: 1px solid #D6DDD1 !important;
   border-radius: 6px !important;
   font-size: 10.5px !important;
 }
+section[data-testid="stSidebar"] .st-key-channels label[data-testid="stWidgetLabel"] p,
+section[data-testid="stSidebar"] .st-key-types label[data-testid="stWidgetLabel"] p,
+section[data-testid="stSidebar"] .st-key-amounts label[data-testid="stWidgetLabel"] p { font-size: 10.5px; }
+.st-key-channels span[data-baseweb="tag"],
+.st-key-types span[data-baseweb="tag"],
+.st-key-amounts span[data-baseweb="tag"] { font-size: 12px !important; }
+.st-key-channels div[data-baseweb="select"],
+.st-key-types div[data-baseweb="select"],
+.st-key-amounts div[data-baseweb="select"] { font-size: 12px; }
 div[data-baseweb="select"] > div,
 div[data-baseweb="input"] > div {
-  background: #151910 !important;
+  background: #FFFFFF !important;
   border-color: var(--line) !important;
   border-radius: 10px !important;
 }
@@ -139,9 +149,8 @@ div[data-testid="stSidebar"] hr { border-color: var(--line); }
 .brand-mark {
   width: 38px; height: 38px; border-radius: 11px;
   display: grid; place-items: center;
-  background: linear-gradient(145deg, rgba(255,182,39,0.2), rgba(233,107,107,0.12));
-  border: 1px solid rgba(255,182,39,0.35);
-  box-shadow: 0 0 28px -12px rgba(255,182,39,0.7);
+  background: linear-gradient(145deg, rgba(180,83,9,0.10), rgba(190,58,58,0.06));
+  border: 1px solid rgba(180,83,9,0.24);
 }
 .brand-name {
   font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;
@@ -157,7 +166,7 @@ div[data-testid="stSidebar"] hr { border-color: var(--line); }
 }
 .side-note {
   margin-top: 1.4rem; padding: 12px 13px; border-radius: 12px;
-  background: #13160F; border: 1px solid var(--line);
+  background: #F7F8F4; border: 1px solid var(--line);
 }
 .side-note .note-title {
   font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.14em;
@@ -193,7 +202,7 @@ div[data-testid="stSidebar"] hr { border-color: var(--line); }
 .hero-tag {
   font-family: 'Space Mono', monospace; font-size: 9.5px; letter-spacing: 0.04em;
   color: var(--dim); border: 1px solid var(--line); border-radius: 999px;
-  padding: 5px 10px; background: rgba(20,23,16,0.6);
+  padding: 5px 10px; background: rgba(255,255,255,0.75);
 }
 .hero-tag b { color: var(--cream); font-weight: 700; }
 
@@ -208,8 +217,8 @@ div[data-testid="stSidebar"] hr { border-color: var(--line); }
   padding: 4px 9px; font-weight: 700; font-size: 9px; letter-spacing: 0.06em;
   text-transform: uppercase;
 }
-.view-pill.quiet { background: #262B1E; color: var(--dim); }
-.view-sep { color: #3A4030; }
+.view-pill.quiet { background: #E9EDE4; color: var(--dim); }
+.view-sep { color: #B7C0B4; }
 .view-bar b { color: var(--cream); font-weight: 700; }
 
 /* ---------------------------------------------------------------- KPI cards */
@@ -218,7 +227,8 @@ div[data-testid="stSidebar"] hr { border-color: var(--line); }
   display: flex; flex-direction: column;
   padding: 17px 17px 15px 17px;
   border: 1px solid var(--line); border-radius: 16px;
-  background: linear-gradient(180deg, #171B13 0%, #11140E 100%);
+  background: linear-gradient(180deg, #FFFFFF 0%, #FBFCF9 100%);
+  box-shadow: 0 8px 24px -22px rgba(23,32,26,0.45);
   transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
 }
 .kpi-card::before {
@@ -233,13 +243,12 @@ div[data-testid="stSidebar"] hr { border-color: var(--line); }
 .kpi-card:hover {
   transform: translateY(-5px) scale(1.008);
   border-color: var(--accent);
-  box-shadow: 0 20px 44px -22px var(--accent), 0 0 0 1px rgba(255,255,255,0.03) inset;
+  box-shadow: 0 20px 44px -24px rgba(23,32,26,0.36), 0 0 0 1px rgba(255,255,255,0.8) inset;
 }
-.kpi-card:hover::after { opacity: 0.24; }
+.kpi-card:hover::after { opacity: 0.18; }
 .kpi-head { display: flex; align-items: center; gap: 7px; margin-bottom: 8px; }
 .kpi-dot {
   width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
-  box-shadow: 0 0 10px var(--accent);
 }
 .kpi-label {
   font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.13em;
@@ -267,10 +276,11 @@ div[data-testid="stSidebar"] hr { border-color: var(--line); }
 /* ---------------------------------------------------------------- chart cards */
 div[data-testid="stVerticalBlock"]:has(> div[data-testid="stElementContainer"] .chart-title),
 div[data-testid="stVerticalBlock"]:has(> div[data-testid="stElementContainer"] .channel-insight-body) {
-  background: linear-gradient(180deg, #151910 0%, #11140E 100%) !important;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FBFCF9 100%) !important;
   border: 1px solid var(--line) !important;
   border-radius: 18px !important;
   padding: 6px 8px 2px 8px !important;
+  box-shadow: 0 10px 30px -26px rgba(23,32,26,0.38) !important;
 }
 .st-key-hour_card,
 .st-key-night_card {
@@ -299,14 +309,14 @@ div[data-testid="stVerticalBlock"]:has(> div[data-testid="stElementContainer"] .
   padding: 20px 20px 18px 20px; border-radius: 18px;
   border: 1px solid var(--line);
   background:
-    radial-gradient(300px 180px at 100% 0%, rgba(255,182,39,0.12), transparent 65%),
-    linear-gradient(180deg, #171B13 0%, #11140E 100%);
+    radial-gradient(300px 180px at 100% 0%, rgba(180,83,9,0.07), transparent 65%),
+    linear-gradient(180deg, #FFFFFF 0%, #FBFCF9 100%);
   transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
 }
 .insight-card:hover {
   transform: translateY(-4px);
-  border-color: rgba(255,182,39,0.55);
-  box-shadow: 0 20px 44px -24px rgba(255,182,39,0.7);
+  border-color: rgba(180,83,9,0.40);
+  box-shadow: 0 20px 44px -28px rgba(23,32,26,0.40);
 }
 .insight-kicker {
   font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.15em;
@@ -335,12 +345,12 @@ div[data-testid="stVerticalBlock"]:has(> div[data-testid="stElementContainer"] .
   background: conic-gradient(
     var(--amber) 0 var(--mobile),
     var(--rose) var(--mobile) var(--total),
-    #262B1E var(--total) 100%
+    #E6EAE2 var(--total) 100%
   );
 }
 .money-gauge::before {
   content: ""; position: absolute; inset: 15px; border-radius: 50%;
-  background: #13160F; border: 1px solid var(--line);
+  background: #FFFFFF; border: 1px solid var(--line);
 }
 .money-gauge-core {
   position: absolute; inset: 15px; z-index: 1; display: flex; flex-direction: column;
@@ -371,7 +381,7 @@ div[data-testid="stVerticalBlock"]:has(> div[data-testid="stElementContainer"] .
 .money-row {
   display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center;
   gap: 14px; min-height: 42px; padding: 9px 0;
-  border-bottom: 1px solid rgba(43,48,36,0.55); font-size: 12px; color: var(--dim);
+  border-bottom: 1px solid rgba(220,226,215,0.90); font-size: 12px; color: var(--dim);
 }
 .money-row:last-child { border-bottom: 1px solid transparent; }
 .money-name { display: flex; align-items: center; gap: 8px; min-width: 0; }
@@ -398,7 +408,7 @@ div[data-testid="stVerticalBlock"]:has(> div[data-testid="stElementContainer"] .
 .mini-row {
   display: flex; align-items: center; justify-content: space-between; gap: 10px;
   min-height: 27px; box-sizing: border-box;
-  padding: 4px 0; border-bottom: 1px solid rgba(43,48,36,0.55);
+  padding: 4px 0; border-bottom: 1px solid rgba(220,226,215,0.90);
   font-size: 11.5px; color: var(--dim);
 }
 .mini-row:last-child { border-bottom: 1px solid transparent; }
@@ -414,12 +424,13 @@ div[data-testid="stVerticalBlock"]:has(> div[data-testid="stElementContainer"] .
 .rec-card {
   height: 100%; min-height: 196px; padding: 20px 19px 18px 19px;
   border: 1px solid var(--line); border-radius: 17px;
-  background: linear-gradient(180deg, #161A12 0%, #10130D 100%);
+  background: linear-gradient(180deg, #FFFFFF 0%, #FBFCF9 100%);
+  box-shadow: 0 8px 24px -24px rgba(23,32,26,0.42);
   transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
 }
 .rec-card:hover {
   transform: translateY(-4px); border-color: var(--accent);
-  box-shadow: 0 18px 40px -24px var(--accent);
+  box-shadow: 0 18px 40px -28px rgba(23,32,26,0.38);
 }
 .rec-num {
   font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.12em;
@@ -434,7 +445,7 @@ div[data-testid="stVerticalBlock"]:has(> div[data-testid="stElementContainer"] .
   display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px;
   color: var(--faint); font-size: 10.5px; line-height: 1.6;
 }
-.footer a { color: var(--amber); text-decoration: none; border-bottom: 1px solid rgba(255,182,39,0.28); }
+.footer a { color: var(--amber); text-decoration: none; border-bottom: 1px solid rgba(180,83,9,0.28); }
 .footer a:hover { border-bottom-color: var(--amber); }
 .footer .fine { max-width: 760px; }
 
@@ -443,8 +454,8 @@ div[data-testid="stDataFrame"] { border: 1px solid var(--line); border-radius: 1
 div[data-testid="stPlotlyChart"] { background: transparent; }
 div[data-testid="stAlert"] { border-radius: 12px; }
 ::-webkit-scrollbar { width: 9px; height: 9px; }
-::-webkit-scrollbar-track { background: #0B0D09; }
-::-webkit-scrollbar-thumb { background: #2B3024; border-radius: 999px; }
+::-webkit-scrollbar-track { background: #F0F2EC; }
+::-webkit-scrollbar-thumb { background: #C8D0C2; border-radius: 999px; }
 
 @media (max-width: 1300px) {
   div[data-testid="stHorizontalBlock"]:has(.kpi-card) {
@@ -498,8 +509,41 @@ div[data-testid="stAlert"] { border-radius: 12px; }
   .money-gauge { width: 154px; height: 154px; flex-basis: 154px; }
   .money-gauge-value { font-size: 35px; }
 }
+@media (min-width: 720px) and (max-width: 1100px) {
+  div[data-testid="stHorizontalBlock"]:has(.st-key-amount_card) {
+    flex-wrap: nowrap !important;
+  }
+  div[data-testid="stHorizontalBlock"]:has(.st-key-amount_card) > div[data-testid="stColumn"],
+  div[data-testid="stHorizontalBlock"]:has(.st-key-amount_card) > div[data-testid="column"] {
+    flex: 1 1 calc(50% - 0.5rem) !important;
+    min-width: 0 !important;
+    width: auto !important;
+  }
+}
 </style>
 """
+
+
+if os.getenv("FRAUD_THEME", "light").strip().lower() == "dark":
+    from theme_dark import (
+        AMBER,
+        BLUE,
+        CARD,
+        CARD_2,
+        CHANNEL_COLORS,
+        CREAM,
+        CSS,
+        DIM,
+        FAINT,
+        GOLD,
+        GREEN,
+        INK,
+        LINE,
+        PURPLE,
+        ROSE,
+        TEAL,
+        TYPE_COLORS,
+    )
 
 
 def md(html_text: str) -> None:
